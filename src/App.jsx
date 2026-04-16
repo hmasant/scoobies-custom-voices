@@ -1,8 +1,126 @@
+// import data from "./data.json";
+// import { useState } from "react";
+// import {
+//   Grid,
+//   Button,
+//   Select,
+//   Divider,
+//   MenuItem,
+//   Container,
+//   TextField,
+//   Typography,
+//   InputLabel,
+//   FormControl,
+// } from "@mui/material";
+
+// export const App = () => {
+//   const [audio, setAudio] = useState(null);
+//   const [deviceId, setDeviceId] = useState("");
+//   const [character, setCharacter] = useState("");
+
+//   const BASE = "https://doug5kw1an5zz.cloudfront.net/custom-voices/";
+//   const TOKEN =
+//     "75113c129bcc22fcc7936c2cba48a92380df6545c581e6ef2f094e87c59c0319";
+
+//   const send = (url) => {
+//     fetch("https://aispea-cdn.z33.fun/api/device/push_url_to_device", {
+//       method: "POST",
+//       body: JSON.stringify({ device_id: deviceId, voice_url: url }),
+//       headers: { "Content-Type": "application/json", "X-API-Token": TOKEN },
+//     });
+//   };
+
+//   const formatName = (name) => name.toLowerCase().split(" ").join("-");
+//   const play = (name) => {
+//     if (audio) audio.pause();
+//     const newAudio = new Audio(`${BASE}${formatName(name)}.mp3`);
+//     newAudio.play();
+//     setAudio(newAudio);
+//   };
+
+//   const filtered = character ? data.filter((e) => e.name === character) : data;
+
+//   return (
+//     <>
+//       <Typography
+//         variant="h3"
+//         sx={{ fontWeight: "bold", textAlign: "center", my: 5 }}
+//       >
+//         Customized Voices - Scoobies
+//       </Typography>
+//       <Divider />
+//       <Container sx={{ my: 5 }}>
+//         <Grid container spacing={5}>
+//           <Grid size={{ md: 6 }}>
+//             <FormControl fullWidth>
+//               <InputLabel>Character</InputLabel>
+//               <Select
+//                 label="Character"
+//                 value={character}
+//                 onChange={(e) => setCharacter(e.target.value)}
+//               >
+//                 {data.map((e, i) => (
+//                   <MenuItem key={i} value={e.name}>
+//                     {e.name}
+//                   </MenuItem>
+//                 ))}
+//               </Select>
+//             </FormControl>
+//           </Grid>
+//           <Grid size={{ md: 6 }}>
+//             <TextField
+//               value={deviceId}
+//               label="Device ID"
+//               placeholder="Enter Device Id"
+//               onChange={(e) => setDeviceId(e.target.value)}
+//               fullWidth
+//             />
+//           </Grid>
+//         </Grid>
+//       </Container>
+//       <Divider />
+//       <Container sx={{ my: 3 }}>
+//         <Grid container spacing={5}>
+//           {filtered.map((e, i) => (
+//             <Grid
+//               key={i}
+//               size={{ md: 4 }}
+//               sx={{ boxShadow: 2, p: 2, borderRadius: 2, cursor: "pointer" }}
+//             >
+//               <Typography>{e.name}</Typography>
+//               <Typography sx={{ fontWeight: "bold", my: 2 }}>
+//                 {e.text}
+//               </Typography>
+//               <Button
+//                 variant="contained"
+//                 color="primary"
+//                 onClick={() => play(e.name)}
+//               >
+//                 Play
+//               </Button>
+//               <Button
+//                 variant="outlined"
+//                 color="primary"
+//                 sx={{ ml: 1 }}
+//                 onClick={() =>
+//                   deviceId
+//                     ? send(`${BASE}${formatName(e.name)}.mp3`)
+//                     : alert("Enter Device ID")
+//                 }
+//               >
+//                 Send
+//               </Button>
+//             </Grid>
+//           ))}
+//         </Grid>
+//       </Container>
+//     </>
+//   );
+// };
+
+import data from "./data.json";
 import { useState } from "react";
-import { PlayArrow, Send } from "@mui/icons-material";
 import {
-  Box,
-  Card,
   Grid,
   Button,
   Select,
@@ -10,229 +128,193 @@ import {
   MenuItem,
   Container,
   TextField,
-  InputLabel,
   Typography,
-  CardContent,
+  InputLabel,
   FormControl,
+  Card,
+  CardContent,
+  CardActions,
+  Box,
+  AppBar,
+  Toolbar,
+  Stack,
 } from "@mui/material";
-
-const gradient1 = "#667eea";
-const gradient2 = "#764ba2";
+import { PlayArrow, Send, Person, Devices } from "@mui/icons-material";
 
 export const App = () => {
+  const [audio, setAudio] = useState(null);
   const [deviceId, setDeviceId] = useState("");
   const [character, setCharacter] = useState("");
-  const fldStyle = {
-    borderRadius: "12px",
-    "& .MuiOutlinedInput-root": {
-      transition: "all 0.3s ease",
-      "&:hover": { boxShadow: `0 4px 20px rgba(102,126,234,0.15)` },
-      "&.Mui-focused": { boxShadow: `0 8px 32px rgba(102,126,234,0.25)` },
-    },
+
+  const BASE = "https://doug5kw1an5zz.cloudfront.net/custom-voices/";
+  const TOKEN =
+    "75113c129bcc22fcc7936c2cba48a92380df6545c581e6ef2f094e87c59c0319";
+
+  const send = (url) => {
+    fetch("https://aispea-cdn.z33.fun/api/device/push_url_to_device", {
+      method: "POST",
+      body: JSON.stringify({ device_id: deviceId, voice_url: url }),
+      headers: { "Content-Type": "application/json", "X-API-Token": TOKEN },
+    });
   };
 
+  const formatName = (name) => name.toLowerCase().split(" ").join("-");
+
+  const play = (name) => {
+    if (audio) audio.pause();
+    const newAudio = new Audio(`${BASE}${formatName(name)}.mp3`);
+    newAudio.play();
+    setAudio(newAudio);
+  };
+
+  const filtered = character ? data.filter((e) => e.name === character) : data;
+
   return (
-    <Box
-      sx={{
-        background: "linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)",
-        minHeight: "100vh",
-        py: 6,
-      }}
-    >
-      <Box
+    <Box sx={{ flexGrow: 1, bgcolor: "#f5f7fa", minHeight: "100vh", pb: 10 }}>
+      {/* Sleek App Bar */}
+      <AppBar
+        position="static"
+        elevation={0}
         sx={{
-          textAlign: "center",
-          mb: 6,
-          animation: "fadeInDown 0.8s ease-out",
-          "@keyframes fadeInDown": {
-            from: { opacity: 0, transform: "translateY(-20px)" },
-            to: { opacity: 1, transform: "translateY(0)" },
-          },
+          bgcolor: "white",
+          color: "text.primary",
+          borderBottom: "1px solid #e0e0e0",
         }}
       >
-        <Typography
-          variant="h2"
-          sx={{
-            fontWeight: 800,
-            background: `linear-gradient(135deg, ${gradient1} 0%, ${gradient2} 100%)`,
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            mb: 2,
-          }}
+        <Toolbar>
+          <Typography variant="h6" sx={{ fontWeight: 800, letterSpacing: 1 }}>
+            SCOOBIES{" "}
+            <Box component="span" sx={{ color: "primary.main" }}>
+              VOICES
+            </Box>
+          </Typography>
+        </Toolbar>
+      </AppBar>
+
+      <Container maxWidth="lg" sx={{ mt: 5 }}>
+        {/* Controls Section */}
+        <Card
+          elevation={0}
+          sx={{ p: 3, borderRadius: 4, border: "1px solid #e0e0e0", mb: 4 }}
         >
-          Customized Voices
-        </Typography>
-        <Typography
-          variant="h5"
-          sx={{ color: "#666", fontWeight: 300, letterSpacing: "2px" }}
-        >
-          SCOOBIES
-        </Typography>
-      </Box>
-      <Divider
-        sx={{
-          mb: 6,
-          backgroundColor: "rgba(102, 126, 234, 0.2)",
-          height: "2px",
-        }}
-      />
-      <Container maxWidth="lg" sx={{ mb: 8 }}>
+          <Grid container spacing={3} alignItems="center">
+            <Grid size={{ md: 4 }}>
+              <FormControl fullWidth>
+                <InputLabel>Character</InputLabel>
+                <Select
+                  label="Character"
+                  value={character}
+                  onChange={(e) => setCharacter(e.target.value)}
+                >
+                  <MenuItem value="">
+                    <em>All Characters</em>
+                  </MenuItem>
+                  {data.map((e, i) => (
+                    <MenuItem key={i} value={e.name}>
+                      {e.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid size={{ md: 4 }}>
+              <TextField
+                value={deviceId}
+                label="Device ID"
+                placeholder="Enter ID to send audio"
+                onChange={(e) => setDeviceId(e.target.value)}
+                fullWidth
+                InputProps={{
+                  startAdornment: (
+                    <Devices
+                      fontSize="small"
+                      sx={{ mr: 1, color: "action.active" }}
+                    />
+                  ),
+                }}
+              />
+            </Grid>
+            <Grid size={{ md: 2 }}>
+              <Button
+                fullWidth
+                variant="outlined"
+                onClick={() => {
+                  setCharacter("");
+                  setDeviceId("");
+                }}
+                sx={{ height: "100%", borderRadius: 2 }}
+              >
+                Reset
+              </Button>
+            </Grid>
+          </Grid>
+        </Card>
+
+        {/* Voice Grid */}
         <Grid container spacing={3}>
-          <Grid size={{ md: 6 }}>
-            <FormControl fullWidth>
-              <InputLabel
-                sx={{ fontWeight: 600, "&.Mui-focused": { color: gradient1 } }}
-              >
-                Character
-              </InputLabel>
-              <Select
-                label="Character"
-                value={character}
-                onChange={(e) => setCharacter(e.target.value)}
-                sx={fldStyle}
-              >
-                <MenuItem value="mickey-mouse">🐭 Mickey Mouse</MenuItem>
-                <MenuItem value="donald-duck">🦆 Donald Duck</MenuItem>
-                <MenuItem value="peppa-pig">🐷 Peppa Pig</MenuItem>
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid size={{ md: 6 }}>
-            <TextField
-              value={deviceId}
-              label="Device ID"
-              placeholder="Enter Device ID"
-              onChange={(e) => setDeviceId(e.target.value)}
-              fullWidth
-              sx={fldStyle}
-            />
-          </Grid>
-        </Grid>
-      </Container>
-      <Divider
-        sx={{
-          mb: 8,
-          backgroundColor: "rgba(102, 126, 234, 0.2)",
-          height: "2px",
-        }}
-      />
-      <Container maxWidth="lg">
-        <Grid container spacing={4}>
-          {Array.from({ length: 6 }).map((_, i) => (
-            <Grid
-              key={i}
-              size={{ xs: 12, sm: 6, md: 4 }}
-              sx={{
-                animation: `fadeInUp 0.6s ease-out ${i * 0.1}s both`,
-                "@keyframes fadeInUp": {
-                  from: { opacity: 0, transform: "translateY(20px)" },
-                  to: { opacity: 1, transform: "translateY(0)" },
-                },
-              }}
-            >
+          {filtered.map((e, i) => (
+            <Grid item key={i} xs={12} sm={6} md={4}>
               <Card
+                elevation={0}
                 sx={{
                   height: "100%",
-                  background:
-                    "linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%)",
-                  border: "1px solid rgba(102, 126, 234, 0.1)",
-                  borderRadius: "16px",
-                  boxShadow: "0 4px 16px rgba(102, 126, 234, 0.08)",
-                  transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
-                  cursor: "pointer",
-                  overflow: "hidden",
-                  position: "relative",
-                  "&::before": {
-                    content: '""',
-                    position: "absolute",
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    height: "3px",
-                    background: `linear-gradient(90deg, ${gradient1} 0%, ${gradient2} 100%)`,
-                  },
+                  display: "flex",
+                  flexDirection: "column",
+                  borderRadius: 3,
+                  border: "1px solid #e0e0e0",
+                  transition: "all 0.3s ease",
                   "&:hover": {
-                    transform: "translateY(-8px)",
-                    boxShadow: "0 12px 32px rgba(102, 126, 234, 0.2)",
-                    borderColor: "rgba(102, 126, 234, 0.3)",
+                    transform: "translateY(-4px)",
+                    boxShadow: "0 12px 24px rgba(0,0,0,0.05)",
+                    borderColor: "primary.light",
                   },
                 }}
               >
-                <CardContent sx={{ pb: 3 }}>
+                <CardContent sx={{ flexGrow: 1 }}>
                   <Typography
                     variant="overline"
-                    sx={{
-                      color: gradient1,
-                      fontWeight: 700,
-                      letterSpacing: "1px",
-                      fontSize: "0.75rem",
-                      mb: 1.5,
-                      display: "block",
-                    }}
+                    sx={{ color: "primary.main", fontWeight: "bold" }}
                   >
-                    Ask Pookie
+                    {e.name}
                   </Typography>
                   <Typography
-                    variant="h6"
+                    variant="body1"
                     sx={{
-                      fontWeight: 700,
-                      color: "#333",
-                      lineHeight: 1.5,
-                      mb: 3,
-                      fontSize: "1.1rem",
-                      minHeight: "3em",
+                      fontWeight: 500,
+                      mt: 1,
+                      color: "text.secondary",
+                      fontStyle: "italic",
                     }}
                   >
-                    What's your favorite adventure today?
+                    "{e.text}"
                   </Typography>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      gap: 1.5,
-                      pt: 2,
-                      borderTop: "1px solid rgba(102, 126, 234, 0.1)",
-                    }}
-                  >
-                    <Button
-                      variant="contained"
-                      startIcon={<PlayArrow />}
-                      sx={{
-                        borderRadius: "10px",
-                        background: `linear-gradient(135deg, ${gradient1} 0%, ${gradient2} 100%)`,
-                        textTransform: "none",
-                        fontWeight: 600,
-                        flex: 1,
-                        transition: "all 0.3s ease",
-                        "&:hover": {
-                          transform: "scale(1.02)",
-                          boxShadow: `0 8px 24px rgba(102,126,234,0.4)`,
-                        },
-                      }}
-                    >
-                      Play
-                    </Button>
-                    <Button
-                      variant="outlined"
-                      startIcon={<Send />}
-                      sx={{
-                        borderRadius: "10px",
-                        borderColor: gradient1,
-                        color: gradient1,
-                        textTransform: "none",
-                        fontWeight: 600,
-                        flex: 1,
-                        transition: "all 0.3s ease",
-                        "&:hover": {
-                          borderColor: gradient2,
-                          color: gradient2,
-                          backgroundColor: "rgba(102, 126, 234, 0.05)",
-                        },
-                      }}
-                    >
-                      Send
-                    </Button>
-                  </Box>
                 </CardContent>
+
+                <Divider sx={{ mx: 2 }} />
+
+                <CardActions sx={{ p: 2, justifyContent: "space-between" }}>
+                  <Button
+                    size="small"
+                    startIcon={<PlayArrow />}
+                    onClick={() => play(e.name)}
+                    sx={{ borderRadius: 2 }}
+                  >
+                    Preview
+                  </Button>
+                  <Button
+                    size="small"
+                    variant="contained"
+                    startIcon={<Send />}
+                    sx={{ borderRadius: 2, px: 2 }}
+                    onClick={() =>
+                      deviceId
+                        ? send(`${BASE}${formatName(e.name)}.mp3`)
+                        : alert("Enter Device ID")
+                    }
+                  >
+                    Push
+                  </Button>
+                </CardActions>
               </Card>
             </Grid>
           ))}
