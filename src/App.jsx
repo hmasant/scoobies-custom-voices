@@ -1,5 +1,6 @@
 import data from "./data.json";
 import { useState } from "react";
+import { PlayArrow, Send } from "@mui/icons-material";
 import {
   Grid,
   Card,
@@ -87,7 +88,7 @@ export const App = () => {
       <Container sx={{ my: 3 }}>
         <Grid container spacing={5}>
           {filtered.map((e, index) => (
-            <Grid key={index} size={{ md: 4 }}>
+            <Grid key={index} size={{ md: 6 }}>
               <Card key={index}>
                 <CardMedia
                   sx={{ height: 400 }}
@@ -101,23 +102,24 @@ export const App = () => {
                 </CardContent>
                 <CardActions>
                   <Button
-                    variant="contained"
                     color="primary"
-                    onClick={() => play(e.name)}
-                  >
-                    Play
-                  </Button>
-                  <Button
                     variant="outlined"
+                    onClick={() => play(e.name)}
+                    sx={{ fontWeight: "bold" }}
+                  >
+                    <PlayArrow /> &nbsp; &nbsp; Preview
+                  </Button>
+                  &nbsp; &nbsp;
+                  <Button
                     color="primary"
-                    sx={{ ml: 1 }}
+                    variant="contained"
                     onClick={() =>
                       deviceId
                         ? send(`${BASE}${formatName(e.name)}.mp3`)
                         : alert("Enter Device ID")
                     }
                   >
-                    Send to Device
+                    <Send /> &nbsp; &nbsp; Send to Device
                   </Button>
                 </CardActions>
               </Card>
