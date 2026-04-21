@@ -23,7 +23,7 @@ export const App = () => {
   const [deviceId, setDeviceId] = useState("");
   const [character, setCharacter] = useState("");
 
-  const BASE = "https://doug5kw1an5zz.cloudfront.net/";
+  const BASE = "https://scoobies-custom-voices.pages.dev/";
   const TOKEN =
     "75113c129bcc22fcc7936c2cba48a92380df6545c581e6ef2f094e87c59c0319";
 
@@ -39,7 +39,7 @@ export const App = () => {
 
   const play = (name) => {
     if (audio) audio.pause();
-    const newAudio = new Audio(`${BASE}custom-voices/${formatName(name)}.mp3`);
+    const newAudio = new Audio(`${BASE}audio/${formatName(name)}.mp3`);
     newAudio.play();
     setAudio(newAudio);
   };
@@ -88,38 +88,46 @@ export const App = () => {
       <Container sx={{ my: 3 }}>
         <Grid container spacing={5}>
           {filtered.map((e, index) => (
-            <Grid key={index} size={{ md: 6 }}>
-              <Card key={index}>
+            <Grid key={index} size={{ md: 4 }}>
+              <Card
+                key={index}
+                sx={{
+                  height: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
                 <CardMedia
-                  sx={{ height: 400 }}
                   title={e.name}
-                  image={`${BASE}character-images/${formatName(e.name)}.png`}
+                  sx={{ height: 400, aspectRatio: 1 }}
+                  image={`${BASE}image/${formatName(e.name)}.png`}
                 />
-                <CardContent>
+                <CardContent sx={{ flexGrow: 1 }}>
                   <Typography>{e.name}</Typography>
                   <br />
                   <Typography sx={{ fontWeight: "bold" }}>{e.text}</Typography>
                 </CardContent>
-                <CardActions>
+                <CardActions
+                  sx={{ display: "flex", justifyContent: "space-around" }}
+                >
                   <Button
+                    variant="text"
                     color="primary"
-                    variant="outlined"
                     onClick={() => play(e.name)}
                     sx={{ fontWeight: "bold" }}
                   >
                     <PlayArrow /> &nbsp; &nbsp; Preview
                   </Button>
-                  &nbsp; &nbsp;
                   <Button
                     color="primary"
                     variant="contained"
                     onClick={() =>
                       deviceId
-                        ? send(`${BASE}${formatName(e.name)}.mp3`)
+                        ? send(`${BASE}audio/${formatName(e.name)}.mp3`)
                         : alert("Enter Device ID")
                     }
                   >
-                    <Send /> &nbsp; &nbsp; Send to Device
+                    <Send /> &nbsp; &nbsp; Send
                   </Button>
                 </CardActions>
               </Card>
