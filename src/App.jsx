@@ -49,11 +49,15 @@ export const App = () => {
   return (
     <>
       <Typography
-        variant="h3"
-        sx={{ fontWeight: "bold", textAlign: "center", my: 5 }}
+        variant="h2"
+        sx={{ fontWeight: "bold", textAlign: "center", mt: 5 }}
       >
-        Customized Voices - Scoobies
+        Customized Voices
       </Typography>
+      <Typography variant="h5" sx={{ textAlign: "center" }}>
+        Scoobies AI
+      </Typography>
+      <br />
       <Divider />
       <Container sx={{ my: 5 }}>
         <Grid container spacing={5}>
@@ -102,13 +106,21 @@ export const App = () => {
                   sx={{ height: 400, aspectRatio: 1 }}
                   image={`${BASE}image/${formatName(e.name)}.png`}
                 />
-                <CardContent sx={{ flexGrow: 1 }}>
-                  <Typography>{e.name}</Typography>
+                <CardContent sx={{ paddingTop: 4, px: 4, flexGrow: 1 }}>
+                  <Typography variant="h5" sx={{ fontWeight: "bold" }}>
+                    {e.name}
+                  </Typography>
                   <br />
-                  <Typography sx={{ fontWeight: "bold" }}>{e.text}</Typography>
+                  <Divider />
+                  <br />
+                  <Typography>{e.text}</Typography>
                 </CardContent>
                 <CardActions
-                  sx={{ display: "flex", justifyContent: "space-around" }}
+                  sx={{
+                    display: "flex",
+                    paddingBottom: 4,
+                    justifyContent: "space-around",
+                  }}
                 >
                   <Button
                     variant="text"
