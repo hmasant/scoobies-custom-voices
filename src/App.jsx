@@ -111,34 +111,21 @@ export const App = () => {
                   <Typography variant="h5" sx={{ fontWeight: "bold" }}>
                     {e.name}
                   </Typography>
-                  <br />
-                  <Divider />
-                  <br />
+                  <Divider sx={{ my: 2 }} />
                   <Typography>
                     {expanded[e.name]
                       ? e.text
-                      : e.text.substring(0, 100) +
-                        (e.text.length > 100 ? "..." : "")}
+                      : e.text.substring(0, 100) + "..."}
                   </Typography>
-                  {e.text.length > 100 && (
-                    <Button
-                      type="text"
-                      size="small"
-                      onClick={() =>
-                        setExpanded((prev) => ({
-                          ...prev,
-                          [e.name]: !prev[e.name],
-                        }))
-                      }
-                      sx={{ mt: 2 }}
-                    >
-                      {expanded[e.name] ? "Read Less" : "Read More"}
-                    </Button>
-                  )}
+                  <Button
+                    onClick={() => {
+                      setExpanded((p) => ({ ...p, [e.name]: !p[e.name] }));
+                    }}
+                  >
+                    {expanded[e.name] ? "Read Less" : "Read More"}
+                  </Button>
                 </CardContent>
-                <br />
-                <Divider />
-                <br />
+                <Divider sx={{ my: 2 }} />
                 <CardActions
                   sx={{
                     display: "flex",
