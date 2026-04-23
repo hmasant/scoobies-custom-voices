@@ -20,6 +20,7 @@ import {
 
 export const App = () => {
   const [audio, setAudio] = useState(null);
+  const [expanded, setExpanded] = useState({});
   const [deviceId, setDeviceId] = useState("");
   const [character, setCharacter] = useState("");
 
@@ -113,8 +114,31 @@ export const App = () => {
                   <br />
                   <Divider />
                   <br />
-                  <Typography>{e.text}</Typography>
+                  <Typography>
+                    {expanded[e.name]
+                      ? e.text
+                      : e.text.substring(0, 100) +
+                        (e.text.length > 100 ? "..." : "")}
+                  </Typography>
+                  {e.text.length > 100 && (
+                    <Button
+                      type="text"
+                      size="small"
+                      onClick={() =>
+                        setExpanded((prev) => ({
+                          ...prev,
+                          [e.name]: !prev[e.name],
+                        }))
+                      }
+                      sx={{ mt: 2 }}
+                    >
+                      {expanded[e.name] ? "Read Less" : "Read More"}
+                    </Button>
+                  )}
                 </CardContent>
+                <br />
+                <Divider />
+                <br />
                 <CardActions
                   sx={{
                     display: "flex",
