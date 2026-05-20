@@ -24,7 +24,7 @@ export const App = () => {
   const [deviceId, setDeviceId] = useState("");
   const [character, setCharacter] = useState("");
 
-  const BASE = "https://scoobies-custom-voices.pages.dev/";
+  const BASE = window.location.origin;
   const TOKEN =
     "75113c129bcc22fcc7936c2cba48a92380df6545c581e6ef2f094e87c59c0319";
 
@@ -40,7 +40,7 @@ export const App = () => {
 
   const play = (name) => {
     if (audio) audio.pause();
-    const newAudio = new Audio(`${BASE}audio/${formatName(name)}.mp3`);
+    const newAudio = new Audio(`/audio/${formatName(name)}.mp3`);
     newAudio.play();
     setAudio(newAudio);
   };
@@ -105,7 +105,7 @@ export const App = () => {
                 <CardMedia
                   title={e.name}
                   sx={{ height: 400, aspectRatio: 1 }}
-                  image={`${BASE}image/${formatName(e.name)}.png`}
+                  image={`/image/${formatName(e.originalName)}.png`}
                 />
                 <CardContent sx={{ paddingTop: 4, px: 4, flexGrow: 1 }}>
                   <Typography variant="h5" sx={{ fontWeight: "bold" }}>
@@ -136,7 +136,7 @@ export const App = () => {
                   <Button
                     variant="text"
                     color="primary"
-                    onClick={() => play(e.name)}
+                    onClick={() => play(e.originalName)}
                     sx={{ fontWeight: "bold" }}
                   >
                     <PlayArrow /> &nbsp; &nbsp; Preview
@@ -146,7 +146,9 @@ export const App = () => {
                     variant="contained"
                     onClick={() =>
                       deviceId
-                        ? send(`${BASE}audio/${formatName(e.name)}.mp3`)
+                        ? send(
+                            `${BASE}/audio/${formatName(e.originalName)}.mp3`,
+                          )
                         : alert("Enter Device ID")
                     }
                   >
